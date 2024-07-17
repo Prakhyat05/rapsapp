@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "614929701525",
+    "project_id": "rapsapp-3b673",
+    "storage_bucket": "rapsapp-3b673.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614929701525:android:5d93954f43dcfb5b84d99c",
+        "android_client_info": {
+          "package_name": "com.example.service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614929701525-v0lgpm2di7380o6cl5c9c0hoshjnt1oh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.service",
+            "certificate_hash": "575ede0c83ae1679ab8880bcd065052d2f406dbd"
+          }
+        },
+        {
+          "client_id": "614929701525-1jlorgr5ge8pqt794n962j1oej5eikvq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzCrOL4p6V1OWLtkRpuf09C9leAgcygek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614929701525-1jlorgr5ge8pqt794n962j1oej5eikvq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
