@@ -40,9 +40,9 @@ class _DaySelectionState extends State<DaySelection> {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(3.0),
-        side: BorderSide(width: 1, color: Color(0xFFF3F3F3)),
+        side: BorderSide(width: 1, color: Color(0xFFFFFFFF)),
       ),
-      backgroundColor: Color(0xFFF3F3F3),
+      backgroundColor: Color(0xFFFFFFFF),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -70,7 +70,7 @@ class _DaySelectionState extends State<DaySelection> {
                 shrinkWrap: true,
                 itemCount: days.length,
                 itemBuilder: (context, index) {
-                  return CheckboxListTile(
+                  return Container(color: Color(index % 2 == 0 ? 0x00FFFFFF : 0x88F3F3F3),  child:CheckboxListTile(
                     title: MyTextWidget(text: days[index]),
                     value: isSelected[index],
                     onChanged: (value) {
@@ -78,9 +78,9 @@ class _DaySelectionState extends State<DaySelection> {
                         isSelected[index] = value!;
                       });
                     },
-                    checkboxShape: CircleBorder(side: BorderSide.none),
+                    checkboxShape: CircleBorder(side: BorderSide(color: Color(0x00000000), width: 0.0)),
                     activeColor: Colors.green,
-                  );
+                  ));
                 },
               ),
             ),
