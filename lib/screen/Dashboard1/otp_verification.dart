@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:service/export.dart';
+import 'package:service/service/otp.dart';
 
 class ServiceOtpVerification extends StatefulWidget {
   final String? descText;
   final String? whereToGo;
-  const ServiceOtpVerification({super.key, this.descText, this.whereToGo});
+  String otp = "0000";
+  ServiceOtpVerification({super.key, this.descText, this.whereToGo});
 
   @override
   State<ServiceOtpVerification> createState() => _ServiceOtpVerificationState();
@@ -47,184 +49,16 @@ class _ServiceOtpVerificationState extends State<ServiceOtpVerification> {
                   SizedBox(
                     height: 20,
                   ),
-
                   // boxes to put otp.....
                   Form(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 68,
-                          width: 64,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            onSaved: (pin1) {},
-                            decoration: InputDecoration(
-                              enabled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(
-                                    255,
-                                    53,
-                                    194,
-                                    193,
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  5,
-                                ),
-                              ),
-                            ),
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(1),
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                          ),
-                        ),
-
-                        // 2nd
-
-                        SizedBox(
-                          height: 68,
-                          width: 64,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            onSaved: (pin2) {},
-                            decoration: InputDecoration(
-                              enabled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(
-                                    255,
-                                    53,
-                                    194,
-                                    193,
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  5,
-                                ),
-                              ),
-                            ),
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(1),
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                          ),
-                        ),
-
-                        // 3rd
-                        SizedBox(
-                          height: 68,
-                          width: 64,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            onSaved: (pin3) {},
-                            decoration: InputDecoration(
-                              enabled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Color.fromARGB(
-                                    255,
-                                    53,
-                                    194,
-                                    193,
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  5,
-                                ),
-                              ),
-                            ),
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(1),
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                          ),
-                        ),
-
-                        // 4th
-                        SizedBox(
-                          height: 68,
-                          width: 64,
-                          child: TextFormField(
-                            onChanged: (value) {
-                              if (value.length == 1) {
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            onSaved: (pin4) {},
-                            decoration: InputDecoration(
-                              enabled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Color.fromARGB(
-                                    255,
-                                    53,
-                                    194,
-                                    193,
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  5,
-                                ),
-                              ),
-                            ),
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(1),
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                          ),
-                        ),
-                      ],
+                      children: List<SizedBox>.generate(
+                          4,
+                          (i) => OtpDigit(context, (int x) {
+                                widget.otp =
+                                    widget.otp.replaceRange(i, i + 1, "$x");
+                              })),
                     ),
                   ),
 
@@ -235,17 +69,25 @@ class _ServiceOtpVerificationState extends State<ServiceOtpVerification> {
                   // Verify Button
                   MyTextButton(
                       text: 'Verify',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Step6(
-                                imagelocation: verificationImage,
-                                text: 'Verfied',
-                                whereToGo:
-                                    widget.whereToGo ?? 'startingService'),
-                          ),
-                        );
+                      onPressed: () async {
+                        if (await submitOTP(widget.otp)) {
+                          if (mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Step6(
+                                    imagelocation: verificationImage,
+                                    text: 'Verfied',
+                                    whereToGo:
+                                        widget.whereToGo ?? 'startingService'),
+                              ),
+                            );
+                          } else {
+                            throw "context not mounted";
+                          }
+                        } else {
+                          throw "Invalid OTP";
+                        }
                       }),
                 ],
               ),
@@ -255,7 +97,11 @@ class _ServiceOtpVerificationState extends State<ServiceOtpVerification> {
                     text: 'Didn\'t received code?',
                     align: TextAlign.center,
                   ),
-                  MyInkWellButton(text: 'Resend', onPressed: () {}),
+                  MyInkWellButton(
+                      text: 'Resend',
+                      onPressed: () {
+                        requestOTP();
+                      }),
                 ],
               ),
             ],
@@ -264,4 +110,47 @@ class _ServiceOtpVerificationState extends State<ServiceOtpVerification> {
       ),
     );
   }
+}
+
+SizedBox OtpDigit(BuildContext context, Function(int) onChange) {
+  return SizedBox(
+    height: 68,
+    width: 64,
+    child: TextFormField(
+      onChanged: (value) {
+        if (value.length == 1) {
+          FocusScope.of(context).nextFocus();
+        }
+        onChange(int.parse(value));
+      },
+      onSaved: (pin1) {},
+      decoration: InputDecoration(
+        enabled: true,
+        enabledBorder:
+            OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 1,
+            color: Color.fromARGB(
+              255,
+              53,
+              194,
+              193,
+            ),
+          ),
+          borderRadius: BorderRadius.circular(
+            5,
+          ),
+        ),
+      ),
+      style: TextStyle(
+          fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center,
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(1),
+        FilteringTextInputFormatter.digitsOnly
+      ],
+    ),
+  );
 }

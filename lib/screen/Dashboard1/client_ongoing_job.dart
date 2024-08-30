@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import "package:service/export.dart";
+import "package:service/service/otp.dart";
 
 class ClientOnGoingJob extends StatefulWidget {
   const ClientOnGoingJob({super.key});
@@ -353,16 +354,19 @@ class _ClientOnGoingJobState extends State<ClientOnGoingJob>
                         ),
                         MyTextButton(
                           text: 'Mark as complete',
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ServiceOtpVerification(
-                                          descText:
-                                              'Enter the verification code to complete service request.',
-                                          whereToGo: 'pay',
-                                        )));
+                          onPressed: () async {
+                            await requestOTP();
+                            if (mounted) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ServiceOtpVerification(
+                                            descText:
+                                                'Enter the verification code to complete service request.',
+                                            whereToGo: 'pay',
+                                          )));
+                            }
                           },
                         ),
                       ],
