@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:email_otp/email_otp.dart';
 import 'package:pinput/pinput.dart';
 import 'package:service/export.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +12,7 @@ import 'package:service/common/components/my_heading_text_widget.dart';
 import 'package:service/common/components/my_inkwell_button.dart';
 import 'package:service/common/components/my_text_button.dart';
 import 'package:service/common/components/my_text_widget.dart';
+import 'package:service/service/otp.dart';
 
 import '../Register/RegisterWithMobileNumber/register_with_mobile_number.dart';
 
@@ -75,7 +75,7 @@ class _OTPEmailState extends State<OTPEmail> {
                   MyTextButton(
                       text: verify,
                       onPressed: () async {
-                        bool res = EmailOTP.verifyOTP(otp: pinController.text);
+                        bool res = await submitOTP(pinController.text);
                         if (res == true) {
                           Navigator.pushNamed(context, 'otpphoneverified');
                           await Future.delayed(Duration(seconds: 2));
@@ -90,7 +90,7 @@ class _OTPEmailState extends State<OTPEmail> {
               Column(
                 children: [
                   MyTextWidget(text: 'Didn\'t received code?'),
-                  MyInkWellButton(text: 'Resend', onPressed: () {}),
+                  MyInkWellButton(text: 'Resend', onPressed: () {requestOTP();}),
                 ],
               ),
               /*Column(

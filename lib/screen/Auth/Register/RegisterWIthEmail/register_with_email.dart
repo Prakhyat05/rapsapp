@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:email_auth/email_auth.dart';
-import 'package:email_otp/email_otp.dart';
 import 'package:service/export.dart';
 import 'package:service/screen/Dashboard1/empty_state.dart';
 import 'package:service/screen/snackBar.dart';
 import 'package:service/service/authentication.dart';
 import 'package:service/service/google_auth.dart';
+import 'package:service/service/otp.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -61,7 +60,7 @@ class _RegisterWithEmailState extends State<RegisterWithEmail> {
       setState(() {
         isLoading = true;
       });
-      EmailOTP.sendOTP(email: emailController.text);
+      requestOTP();
       await Navigator.pushNamed(context, 'otpemail');
 
       //sendOTP();
@@ -73,19 +72,6 @@ class _RegisterWithEmailState extends State<RegisterWithEmail> {
       /*Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
               showSnackBar(context, 'Some error Occurred! Try again')));*/
-    }
-  }
-
-  EmailAuth emailAuth = new EmailAuth(sessionName: "OTP Session");
-
-  void sendOTP() async {
-    var res = await emailAuth.sendOtp(
-        recipientMail: emailController.value.text, otpLength: 6);
-    if (res) {
-      print('OTP Sent');
-      //Navigator.pushNamed(context, 'otpemail');
-    } else {
-      print('OTP sending Failed');
     }
   }
 

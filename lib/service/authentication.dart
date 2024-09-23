@@ -1,52 +1,68 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:service/common/constants/string.dart';
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:service/service/globals.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
 class AuthServices {
-  static String uidUser = "";
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future<String> signUPUser(
-      {required String email,
-      required String password,
-      required String name}) async {
-    String res = "Some error Occured";
-    //String userData = "";
-    try {
-      if (email.isNotEmpty || password.isNotEmpty || name.isNotEmpty) {
-        UserCredential credential = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        await _firestore.collection("users").doc(credential.user!.uid).set({
-          'name': name,
-          'email': email,
-          'uid': credential.user!.uid,
-        });
-        res = "success";
-        AuthServices.uidUser = credential.user!.uid;
-        print(uidUser);
+  static var authToken;
+  sync() {
+    SharedPreferences.getInstance().then((pref) {
+      if (authToken == null) {
+        authToken = pref.getString("auth-token");
+      } else {
+        pref.setString("auth-token", authToken);
       }
-    } catch (e) {
-      return e.toString();
-    }
-    return res;
+    });
   }
 
-  Future<String> logInUser(
-      {required String email, required String password}) async {
-    String res = "Some error Occured";
-    try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-        res = "success";
-      } else {
-        res = "Please enter all fields";
-      }
-    } catch (e) {
-      return e.toString();
+  signIn(String email, String password) async {
+    var resp = await http.put(Uri.parse("${Globals.backendURL}/auth/sign_in"),
+        body: jsonEncode({email: email, password: password}));
+    var cookies = Cookie.fromSetCookieValue(resp.headers["set-cookie"]!);
+    if (cookies.name == "auth-token") {
+      authToken = cookies.value;
     }
-    return res;
+  }
+
+  signUp(String email, String password, String phone, String name) async {
+    await http.post(Uri.parse("${Globals.backendURL}/auth/sign_up"),
+        body: jsonEncode(
+            {email: email, password: password, name: name, phone: phone}));
+  }
+
+  requestOTP(String email) async {
+    await http.post(Uri.parse("${Globals.backendURL}/auth/new_otp"),
+        body: jsonEncode({email: email}));
+  }
+
+  getProfile() async {
+    return jsonDecode(
+        (await http.get(Uri.parse("${Globals.backendURL}/profile"))).body);
+  }
+
+  createProfile(String adhaar, String city, String district, int pin_code,
+      String town, String account_number, String branch, String ifsc) async {
+    return jsonDecode(
+        (await http.post(Uri.parse("${Globals.backendURL}/profile"), body: {
+      jsonEncode({
+        adhaar: adhaar,
+        city: city,
+        district: district,
+        pin_code: pin_code,
+        town: town,
+        account_number: account_number,
+        branch: branch,
+        ifsc: ifsc,
+      })
+    }))
+            .body);
+  }
+
+  bool isSignedIn() {
+    return authToken != null;
   }
 }

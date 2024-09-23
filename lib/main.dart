@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import "package:email_otp/email_otp.dart";
-import "package:firebase_auth/firebase_auth.dart";
-import "package:firebase_core/firebase_core.dart";
 import "package:service/screen/Auth/verification/otp_mobile.dart";
 import "package:service/screen/ComingSoon.dart";
 import "package:service/screen/Dashboard1/app_language.dart";
@@ -16,24 +13,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final onboarding = prefs.getBool('onboarding') ?? false;
-  EmailOTP.config(
-    appName: 'RAPS APP',
-    otpType: OTPType.numeric,
-    emailTheme: EmailTheme.v1,
-    appEmail: 'noreply@rapsapp.com',
-    otpLength: 6,
-  );
 
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: "AIzaSyDzCrOL4p6V1OWLtkRpuf09C9leAgcygek",
-          appId: "1:614929701525:android:5d93954f43dcfb5b84d99c",
-          messagingSenderId: "614929701525",
-          projectId: "rapsapp-3b673",
-          storageBucket: "rapsapp-3b673.appspot.com"));
-  await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -46,15 +29,11 @@ class _MyAppState extends State<MyApp> {
   //User? user;
 
   @override
-  /*void initState() {
-    super.initState();
-    user = FirebaseAuth.instance.currentUser;
-  }*/
-
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       //initialRoute: 'profile_step1',
+      theme : ThemeData(colorScheme: ColorScheme.light()),
       routes: {
         '/': (context) => SplashScreenOne(),
         'regemail': (context) => RegisterWithEmail(),
