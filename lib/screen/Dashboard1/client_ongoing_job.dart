@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import "package:service/export.dart";
-import "package:service/service/otp.dart";
+import "package:service/service/authentication.dart";
 
 class ClientOnGoingJob extends StatefulWidget {
   const ClientOnGoingJob({super.key});
@@ -355,7 +355,7 @@ class _ClientOnGoingJobState extends State<ClientOnGoingJob>
                         MyTextButton(
                           text: 'Mark as complete',
                           onPressed: () async {
-                            await requestOTP();
+                            await AuthServices().requestOTP(AuthServices().getUser()["email"]);
                             if (mounted) {
                               Navigator.push(
                                   context,

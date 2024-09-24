@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:service/export.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:service/service/authentication.dart';
 
 class SplashScreenOne extends StatefulWidget {
   final bool onboarding;
@@ -13,11 +12,11 @@ class SplashScreenOne extends StatefulWidget {
 }
 
 class _SplashScreenOneState extends State<SplashScreenOne> {
-  User? user;
+  var user;
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser;
+    user = AuthServices().getUser();
     // Navigate to the onboarding screen after 3 seconds
     Future.delayed(Duration(seconds: 3), () {
       if (user != null) {

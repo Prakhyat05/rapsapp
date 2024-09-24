@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:service/export.dart';
-import 'package:service/service/otp.dart';
+import 'package:service/service/authentication.dart';
 
 class ServiceOtpVerification extends StatefulWidget {
   final String? descText;
@@ -70,7 +70,7 @@ class _ServiceOtpVerificationState extends State<ServiceOtpVerification> {
                   MyTextButton(
                       text: 'Verify',
                       onPressed: () async {
-                        if (await submitOTP(widget.otp)) {
+                        if (await AuthServices().checkOTP(AuthServices().getUser()["email"], widget.otp)) {
                           if (mounted) {
                             Navigator.push(
                               context,
@@ -100,7 +100,7 @@ class _ServiceOtpVerificationState extends State<ServiceOtpVerification> {
                   MyInkWellButton(
                       text: 'Resend',
                       onPressed: () {
-                        requestOTP();
+                        AuthServices().requestOTP(AuthServices().getUser()["email"]);
                       }),
                 ],
               ),

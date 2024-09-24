@@ -2,9 +2,7 @@
 
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:service/export.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:service/screen/Dashboard1/empty_state.dart';
 import 'package:service/service/authentication.dart';
 
@@ -25,36 +23,24 @@ class _Step5State extends State<Step5> {
   String urlImage = "";
 
   databaseData() async {
-    UploadTask uploadTask = FirebaseStorage.instance
-        .ref("Profile Pics")
-        .child(Step1.nameSend)
-        .putFile(Step1.pickedImageSend!);
-    TaskSnapshot taskSnapshot = await uploadTask;
-    String url = await taskSnapshot.ref.getDownloadURL();
-    urlImage = url;
-    await FirebaseFirestore.instance
-        .collection("profile")
-        .doc(AuthServices.uidUser)
-        .set({
-      "Image": url,
-      "Full Name": Step1.nameSend,
-      "Town": Step1.townSend,
-      "City": Step1.citySend,
-      "District": Step1.districtSend,
-      "Pin Code": Step1.pincodeSend,
-      "Service Provided (Primary)": Step2.sproviderPrimary,
-      "Rate Per Hour (Primary)": Step2.ratePrimary,
-      "Service Provided (Secondary)": Step2.sprovidersecondary,
-      "Rate Per Hour (Secondary)": Step2.rateSecondary,
-      "Working Days": Step3.days,
-      "Working Hours": Step3.workingHours,
-      "Aadhar Number": Step4.addhar,
-      "Account Number": accountNumber.text.toString(),
-      "Branch Name": branchName.text.toString(),
-      "IFSC Code": ifscCode.text.toString(),
-    }).then((value) {
-      print("User Uploaded");
-    });
+    await AuthServices().setProfilePhoto(Step1.pickedImageSend!);
+    await AuthServices().createProfile(
+        Step4.addhar,
+        Step1.citySend,
+        Step1.districtSend,
+        int.parse(Step1.pincodeSend),
+        Step1.townSend,
+        accountNumber.text,
+        branchName.text,
+        ifscCode.text);
+    await AuthServices().addService(Step2.sproviderPrimary, Step2.ratePrimary,
+        Step3.days, Step3.workingTimeStart, Step3.workingTimeEnd);
+    await AuthServices().addService(
+        Step2.sprovidersecondary,
+        Step2.rateSecondary,
+        Step3.days,
+        Step3.workingTimeStart,
+        Step3.workingTimeEnd);
   }
 
   @override

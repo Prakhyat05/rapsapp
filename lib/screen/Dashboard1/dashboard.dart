@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:service/export.dart';
-import 'package:service/service/get_data.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -19,16 +17,10 @@ class _DashboardState extends State<Dashboard> {
   bool reviews = true;
   bool earning = true;
 
-  final storage = FirebaseStorage.instance;
   late String imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    Future<void> getImageUrl() async {
-      final ref = storage.ref();
-      final url = await ref.getDownloadURL();
-      imageUrl = url;
-    }
 
     print(MediaQuery.of(context).size.width);
     return AnnotatedRegion<SystemUiOverlayStyle>(

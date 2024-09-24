@@ -9,24 +9,32 @@ import 'package:service/common/components/my_appbar_back_button.dart';
 import 'package:service/common/components/my_desc_text_widget.dart';
 import 'package:service/common/components/my_heading_text_widget.dart';
 import 'package:service/common/components/my_text_button.dart';
+import 'package:service/service/authentication.dart';
 
 class Step3 extends StatefulWidget {
   const Step3({super.key});
-  static String days = "";
-  static String workingHours = "";
+  static List<WeekDays> days = [];
+  static TimeOfDay workingTimeStart = TimeOfDay(hour: 0, minute: 0);
+  static TimeOfDay workingTimeEnd = TimeOfDay(hour: 0, minute: 0);
 
   @override
   State<Step3> createState() => _Step3State();
 }
-
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+  }
+}
 class _Step3State extends State<Step3> {
-  List<String> selectedDays = [];
+  List<WeekDays> selectedDays = [];
   TimeOfDay? startTime;
   TimeOfDay? endTime;
 
   void updateSelectedDays(List<String> days) {
     setState(() {
-      selectedDays = days;
+      selectedDays = days.map((d) =>
+        WeekDays.values.firstWhere((e) => e.toString() == "WeekDays.${d.toLowerCase()}")
+      ).toList();
     });
   }
 
@@ -39,8 +47,9 @@ class _Step3State extends State<Step3> {
 
   @override
   Widget build(BuildContext context) {
-    Step3.days = selectedDays.toString();
-    Step3.workingHours = startTime.toString() + " to " + endTime.toString();
+    Step3.days = selectedDays;
+    Step3.workingTimeEnd = endTime?? TimeOfDay(hour: 0, minute: 0);
+    Step3.workingTimeStart = startTime?? TimeOfDay(hour: 0, minute: 0);
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -85,7 +94,7 @@ class _Step3State extends State<Step3> {
                     MyGestureButton(
                       hintText: selectedDays.isNotEmpty
                           ? selectedDays
-                              .map((day) => day.toString().substring(0, 3))
+                              .map((day) => day.toString().capitalize().substring(0, 3))
                               .join(', ')
                           : 'Select days you are available',
                       onPressed: () {
@@ -93,7 +102,7 @@ class _Step3State extends State<Step3> {
                           context: context,
                           builder: (context) => DaySelection(
                             onSelectedDaysChanged: updateSelectedDays,
-                            selectedDays: selectedDays,
+                            selectedDays: selectedDays.map((v) => v.toString().capitalize()).toList(),
                           ),
                         );
                       },

@@ -2,7 +2,6 @@
 
 import 'package:pinput/pinput.dart';
 import 'package:service/export.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
@@ -12,7 +11,6 @@ import 'package:service/common/components/my_heading_text_widget.dart';
 import 'package:service/common/components/my_inkwell_button.dart';
 import 'package:service/common/components/my_text_button.dart';
 import 'package:service/common/components/my_text_widget.dart';
-import 'package:service/service/otp.dart';
 
 import '../Register/RegisterWithMobileNumber/register_with_mobile_number.dart';
 
