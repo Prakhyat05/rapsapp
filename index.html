@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/rapsapp/">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="RapsApp Live Interactive Mobile Preview — Experience the Hyperlocal Service Marketplace in an authentic iPhone 15 Pro frame.">
+
+  <!-- Apple & OpenGraph Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RapsApp">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>RapsApp — Live Interactive Mobile Demo (iPhone 15 Pro)</title>
+
+  <style>
+    :root {
+      --primary: #00A896;
+      --primary-dark: #028090;
+      --accent: #6366F1;
+      --bg-dark: #070A12;
+      --surface: rgba(15, 23, 42, 0.78);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --iphone-width: 393px;
+      --iphone-height: 852px;
+      --iphone-radius: 54px;
+      --screen-radius: 44px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-main);
+      user-select: none;
+    }
+
+    /* Ambient Luxury Aurora Background */
+    .aurora-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .aurora-glow-1 {
+      position: absolute;
+      top: -160px;
+      left: 12%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 168, 150, 0.3) 0%, rgba(0, 168, 150, 0) 70%);
+      filter: blur(110px);
+      animation: floatGlow 14s ease-in-out infinite alternate;
+    }
+
+    .aurora-glow-2 {
+      position: absolute;
+      bottom: -160px;
+      right: 12%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.24) 0%, rgba(99, 102, 241, 0) 70%);
+      filter: blur(120px);
+      animation: floatGlow 18s ease-in-out infinite alternate-reverse;
+    }
+
+    .aurora-glow-3 {
+      position: absolute;
+      top: 35%;
+      right: 25%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(2, 128, 144, 0.2) 0%, rgba(2, 128, 144, 0) 70%);
+      filter: blur(95px);
+    }
+
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(circle at center, black 45%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 85%);
+    }
+
+    @keyframes floatGlow {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(45px, 35px) scale(1.08); }
+    }
+
+    /* Master Layout */
+    .app-viewport {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+    }
+
+    /* Top Glass Navbar */
+    .top-navbar {
+      width: 100%;
+      max-width: 1100px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #00A896 0%, #028090 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      color: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(0, 168, 150, 0.5);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #34D399;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background-color: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .device-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #E2E8F0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+
+    .nav-btn-primary {
+      background: linear-gradient(135deg, #00A896 0%, #028090 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(0, 168, 150, 0.4);
+      box-shadow: 0 2px 12px rgba(0, 168, 150, 0.35);
+    }
+
+    .nav-btn-primary:hover {
+      box-shadow: 0 4px 16px rgba(0, 168, 150, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* Main Stage */
+    .stage-container {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 4px 0;
+    }
+
+    /* Scaler Wrapper - Ensures no scrollbars and no clipping on any screen */
+    #iphone-scaler {
+      transform-origin: center center;
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* iPhone 15 Pro Chassis */
+    .iphone-chassis {
+      position: relative;
+      width: 413px;
+      height: 872px;
+      background: #171923;
+      border-radius: var(--iphone-radius);
+      padding: 10px;
+      box-sizing: border-box;
+      box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 0 0 3.5px #2B2E3A,
+        0 0 0 5px #111319,
+        0 35px 70px -15px rgba(0, 0, 0, 0.85),
+        0 0 40px rgba(0, 168, 150, 0.15);
+    }
+
+    /* Side Hardware Buttons */
+    .btn-action {
+      position: absolute;
+      left: -8px;
+      top: 110px;
+      width: 4px;
+      height: 28px;
+      background: #2D313E;
+      border-radius: 3px 0 0 3px;
+      box-shadow: -1px 0 2px rgba(0,0,0,0.5);
+    }
+
+    .btn-vol-up {
+      position: absolute;
+      left: -8px;
+      top: 160px;
+      width: 4px;
+      height: 52px;
+      background: #2D313E;
+      border-radius: 3px 0 0 3px;
+      box-shadow: -1px 0 2px rgba(0,0,0,0.5);
+    }
+
+    .btn-vol-down {
+      position: absolute;
+      left: -8px;
+      top: 225px;
+      width: 4px;
+      height: 52px;
+      background: #2D313E;
+      border-radius: 3px 0 0 3px;
+      box-shadow: -1px 0 2px rgba(0,0,0,0.5);
+    }
+
+    .btn-power {
+      position: absolute;
+      right: -8px;
+      top: 175px;
+      width: 4px;
+      height: 76px;
+      background: #2D313E;
+      border-radius: 0 3px 3px 0;
+      box-shadow: 1px 0 2px rgba(0,0,0,0.5);
+    }
+
+    /* Screen Display Container - Exact 393 x 852 Viewport */
+    .iphone-screen {
+      position: relative;
+      width: var(--iphone-width);
+      height: var(--iphone-height);
+      background: #FFFFFF;
+      border-radius: var(--screen-radius);
+      overflow: hidden;
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* The Flutter App Iframe */
+    #rapsapp-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: #FFFFFF;
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: absolute;
+      top: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 122px;
+      height: 35px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      pointer-events: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    .sensor-lens {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1E293B 0%, #0F172A 70%, #000 100%);
+      box-shadow: inset 0 0 2px #028090;
+    }
+
+    .camera-lens {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1A2E35 0%, #081215 70%, #000 100%);
+      box-shadow: inset 0 0 2px #00A896;
+    }
+
+    /* iOS In-Screen Status Bar */
+    .ios-status-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      padding: 12px 30px 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 99;
+      pointer-events: none;
+      color: #000000;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .status-time {
+      font-weight: 600;
+      padding-top: 1px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-top: 2px;
+    }
+
+    .icon-cellular {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5px;
+      height: 11px;
+    }
+
+    .cellular-bar {
+      width: 3px;
+      background: currentColor;
+      border-radius: 0.8px;
+    }
+
+    .cellular-bar:nth-child(1) { height: 3.5px; }
+    .cellular-bar:nth-child(2) { height: 6px; }
+    .cellular-bar:nth-child(3) { height: 8.5px; }
+    .cellular-bar:nth-child(4) { height: 11px; }
+
+    .battery-icon {
+      width: 23px;
+      height: 11.5px;
+      border: 1.5px solid currentColor;
+      border-radius: 3.5px;
+      padding: 1px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .battery-icon::after {
+      content: '';
+      position: absolute;
+      right: -3.5px;
+      width: 2px;
+      height: 4.5px;
+      background: currentColor;
+      border-radius: 0 1px 1px 0;
+    }
+
+    .battery-fill {
+      width: 100%;
+      height: 100%;
+      background: currentColor;
+      border-radius: 1.5px;
+    }
+
+    /* iOS Home Indicator Pill */
+    .ios-home-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 138px;
+      height: 4.5px;
+      background-color: rgba(0, 0, 0, 0.55);
+      border-radius: 10px;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* Bottom Floating Helper Bar */
+    .bottom-helper {
+      width: 100%;
+      max-width: 900px;
+      padding: 7px 20px;
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .helper-text {
+      font-size: 13px;
+      color: #CBD5E1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .helper-tip {
+      color: #38BDF8;
+      font-weight: 600;
+    }
+
+    .credentials-tag {
+      background: rgba(0, 168, 150, 0.15);
+      color: #2DD4BF;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      border: 1px solid rgba(0, 168, 150, 0.3);
+      white-space: nowrap;
+    }
+
+    /* Mobile Responsive Viewport (< 600px width) */
+    @media (max-width: 600px) {
+      .top-navbar, .bottom-helper, .aurora-bg {
+        display: none !important;
+      }
+
+      .app-viewport {
+        padding: 0;
+        justify-content: center;
+      }
+
+      .stage-container {
+        width: 100vw;
+        height: 100vh;
+        padding: 0;
+      }
+
+      #iphone-scaler {
+        transform: none !important;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .iphone-chassis {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+      }
+
+      .btn-action, .btn-vol-up, .btn-vol-down, .btn-power {
+        display: none !important;
+      }
+
+      .iphone-screen {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .dynamic-island, .ios-status-bar, .ios-home-bar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Luxury Aurora Glows -->
+  <div class="aurora-bg">
+    <div class="aurora-glow-1"></div>
+    <div class="aurora-glow-2"></div>
+    <div class="aurora-glow-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="app-viewport">
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar">
+      <div class="brand-section">
+        <div class="brand-icon">R</div>
+        <div class="brand-title">RapsApp</div>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Live Mobile Demo</span>
+        </div>
+      </div>
+
+      <div class="device-indicator">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+        <span>iPhone 15 Pro • 393 × 852</span>
+      </div>
+
+      <div class="nav-actions">
+        <a href="https://github.com/Prakhyat05/rapsapp/releases" target="_blank" class="nav-btn nav-btn-secondary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download APK</span>
+        </a>
+        <a href="https://github.com/Prakhyat05/rapsapp" target="_blank" class="nav-btn nav-btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>View GitHub</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Center Stage: iPhone 15 Pro Frame -->
+    <main class="stage-container">
+      <div id="iphone-scaler">
+        <div class="iphone-chassis">
+          <!-- Hardware Side Buttons -->
+          <div class="btn-action"></div>
+          <div class="btn-vol-up"></div>
+          <div class="btn-vol-down"></div>
+          <div class="btn-power"></div>
+
+          <!-- Screen Container -->
+          <div class="iphone-screen">
+            <!-- iOS In-Screen Status Bar -->
+            <div class="ios-status-bar">
+              <span class="status-time" id="live-clock">9:41</span>
+              <div class="status-icons">
+                <div class="icon-cellular">
+                  <div class="cellular-bar"></div>
+                  <div class="cellular-bar"></div>
+                  <div class="cellular-bar"></div>
+                  <div class="cellular-bar"></div>
+                </div>
+                <span style="font-size: 11px; font-weight: 700; margin-left: 1px;">5G</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;">
+                  <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.62 0 6.94 1.37 9.47 3.65L12 18.3 2.53 11.15C5.06 8.87 8.38 7.5 12 7.5z"/>
+                </svg>
+                <div class="battery-icon">
+                  <div class="battery-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Island with TrueDepth Lenses -->
+            <div class="dynamic-island">
+              <div class="sensor-lens"></div>
+              <div class="camera-lens"></div>
+            </div>
+
+            <!-- The Flutter App Inside Native Viewport -->
+            <iframe id="rapsapp-frame" src="app.html" allow="geolocation; microphone; camera; clipboard-read; clipboard-write;"></iframe>
+
+            <!-- iOS Bottom Home Indicator Bar -->
+            <div class="ios-home-bar"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Bottom Helper Floating Bar -->
+    <footer class="bottom-helper">
+      <div class="helper-text">
+        <span class="helper-tip">💡 Recruiter Quick Tip:</span>
+        <span>Tap <b>"Quick Demo Login"</b> on the sign-in screen to instantly explore the full verified dashboard without creating an account.</span>
+      </div>
+      <div class="credentials-tag">admin@rapsapp.com / 123456</div>
+    </footer>
+  </div>
+
+  <script>
+    // Live Dynamic iOS Clock
+    function updateLiveClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      hours = hours % 12 || 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      const clockEl = document.getElementById('live-clock');
+      if (clockEl) {
+        clockEl.textContent = `${hours}:${minutes}`;
+      }
+    }
+    updateLiveClock();
+    setInterval(updateLiveClock, 1000);
+
+    // Auto-Scaling Engine: Fits iPhone perfectly on any desktop/laptop screen without cropping or overflow
+    function fitDevice() {
+      const scaler = document.getElementById('iphone-scaler');
+      if (!scaler) return;
+
+      if (window.innerWidth <= 600) {
+        scaler.style.transform = 'none';
+        return;
+      }
+
+      // Available viewport height excluding header and footer
+      const headerH = 56;
+      const footerH = 46;
+      const verticalPadding = 20;
+      const horizontalPadding = 32;
+
+      const availableHeight = window.innerHeight - (headerH + footerH + verticalPadding);
+      const availableWidth = window.innerWidth - horizontalPadding;
+
+      // Real dimensions of the iPhone 15 Pro chassis
+      const frameHeight = 872;
+      const frameWidth = 425; // includes buttons
+
+      // Compute optimal uniform scale factor
+      const scaleH = availableHeight / frameHeight;
+      const scaleW = availableWidth / frameWidth;
+      const scale = Math.min(1.0, Math.min(scaleH, scaleW));
+
+      scaler.style.transform = `scale(${Math.max(0.45, scale)})`;
+    }
+
+    window.addEventListener('resize', fitDevice);
+    window.addEventListener('orientationchange', fitDevice);
+    document.addEventListener('DOMContentLoaded', fitDevice);
+    window.addEventListener('load', fitDevice);
+  </script>
+</body>
+</html>
